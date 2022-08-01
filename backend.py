@@ -9,7 +9,7 @@ app.config['JSONIFY_MIMETYPE'] = "application/json;charset=utf-8"
 
 
 @app.route('/', methods=['GET'])
-def queryAnime():
+def hello():
     temp = {"1": 2}
     return jsonify(temp)
 
