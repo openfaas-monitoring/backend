@@ -7,7 +7,15 @@ from node_exporter import NodeExporter
 
 # 总体的监控器对象，负责对接其他不同层面的监控器对象
 class Monitor:
-    def __init__(self, ip):
+    def __init__(self):
+        self.ip = None
+        self.promQL = None
+        self.cadvisor = None
+        self.functionMonitor = None
+        self.kubeState = None
+        self.nodeExporter = None
+
+    def setIp(self, ip):
         self.ip = ip
         self.promQL = PromQL(ip)
         self.cadvisor = CAdvisor(self.promQL)
@@ -53,6 +61,7 @@ class Monitor:
 
 
 if __name__ == '__main__':
-    monitor = Monitor('10.60.150.24:31119')
+    monitor = Monitor()
+    monitor.setIp('10.60.150.24:31119')
     # print(monitor.getDynamicInfoFromPod('nodeinfo'))
     print(monitor.getDynamicInfoFromNode('vm-2c4g-node6'))
