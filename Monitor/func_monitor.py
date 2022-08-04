@@ -8,6 +8,14 @@ class FunctionMonitor:
         self.promQL = prom
         self.cadvisor = CAdvisor(prom)
 
+    # 获取函数列表
+    def getFunctions(self):
+        res = {'status': 'error'}
+        response = self.promQL.query('kube_pod_info{namespace="openfaas-fn"}')
+        res['status'] = response['status']
+        res['func'] = [record['metric']['pod'].split('-')[0] for record in response['data']]
+        return res
+
     # 获取函数静态信息
     def getStaticInfoFromFunction(self, func: str):
         res = dict()
