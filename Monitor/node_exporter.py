@@ -30,7 +30,8 @@ class NodeExporter:
     def getCPURate(self, node: str, end: float):
         query = '100-(avg by(instance)' \
                 '(irate(node_cpu_seconds_total{{mode="idle",instance="{node}"}}[30s]))*100)'.format(node=node)
-        return self.promQL.queryRange(query, end)['data'][0]['values']
+        response = self.promQL.queryRange(query, end)['data'][0]['values']
+        return [[record[0], float(record[1])] for record in response]
 
     # 节点磁盘使用率
     def getDiskRate(self, node: str, end: float):
@@ -40,18 +41,21 @@ class NodeExporter:
                 'node_filesystem_size_bytes{{mountpoint = "/", instance="{node}", ' \
                 'fstype!~"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|udev|none|devpts|sysfs|debugfs|fuse.*"}}' \
                 ' * 100'.format(node=node)
-        return self.promQL.queryRange(query, end)['data'][0]['values']
+        response = self.promQL.queryRange(query, end)['data'][0]['values']
+        return [[record[0], float(record[1])] for record in response]
 
     # 节点磁盘IO[单位为kB]
     def getDiskRead(self, node: str, end: float):
         query = 'sum by(instance)(irate(node_disk_read_bytes_total{{instance="{node}"}}[30s])' \
                 '/1024)'.format(node=node)
-        return self.promQL.queryRange(query, end)['data'][0]['values']
+        response = self.promQL.queryRange(query, end)['data'][0]['values']
+        return [[record[0], float(record[1])] for record in response]
 
     def getDiskWrite(self, node: str, end: float):
         query = 'sum by(instance)(irate(node_disk_written_bytes_total{{instance="{node}"}}[30s])' \
                 '/1024)'.format(node=node)
-        return self.promQL.queryRange(query, end)['data'][0]['values']
+        response = self.promQL.queryRange(query, end)['data'][0]['values']
+        return [[record[0], float(record[1])] for record in response]
 
     # 节点内存使用率随时间变化图
     def getMemRate(self, node: str, end: float):
@@ -59,20 +63,23 @@ class NodeExporter:
                 '+ node_memory_Cached_bytes{{instance="{node}"}}' \
                 '+node_memory_Buffers_bytes{{instance="{node}"}})' \
                 '/node_memory_MemTotal_bytes{{instance="{node}"}}*100'.format(node=node)
-        return self.promQL.queryRange(query, end)['data'][0]['values']
+        response = self.promQL.queryRange(query, end)['data'][0]['values']
+        return [[record[0], float(record[1])] for record in response]
 
     # 节点网络IO[单位为KB]
     def getNetworkUpLoad(self, node: str, end: float):
         query = 'sum by(instance)' \
                 '(irate(node_network_transmit_bytes_total{{device!="lo",instance="{node}"}}[30s])' \
                 '/1024)'.format(node=node)
-        return self.promQL.queryRange(query, end)['data'][0]['values']
+        response = self.promQL.queryRange(query, end)['data'][0]['values']
+        return [[record[0], float(record[1])] for record in response]
 
     def getNetWorkDownload(self, node: str, end: float):
         query = 'sum by(instance)' \
                 '(irate(node_network_receive_bytes_total{{device!="lo",instance="{node}"}}[30s])' \
                 '/1024)'.format(node=node)
-        return self.promQL.queryRange(query, end)['data'][0]['values']
+        response = self.promQL.queryRange(query, end)['data'][0]['values']
+        return [[record[0], float(record[1])] for record in response]
 
 
 if __name__ == '__main__':
