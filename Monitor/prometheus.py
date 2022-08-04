@@ -10,7 +10,7 @@ class PromQL:
         self.apiQueryRange = 'http://' + ip + '/api/v1/query_range'
 
     # 查询瞬时值或者确定的信息
-    def query(self, query: str, end: float):
+    def query(self, query: str):
         res = {
             'status': 'error',
             'data': '',
