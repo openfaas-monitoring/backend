@@ -4,9 +4,9 @@ import json
 
 # 提供PromQL的统一查询接口，供其他指标监控类调用
 class PromQL:
-    def __init__(self, host: str):
-        self.host = host
-        self.api = 'http://' + host + '/api/v1/query'
+    def __init__(self, ip: str):
+        self.ip = ip
+        self.api = 'http://' + ip + '/api/v1/query'
 
     def query(self, query: str):
         res = {
