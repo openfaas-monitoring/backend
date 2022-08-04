@@ -1,4 +1,4 @@
-from prometheus import PromQL
+from Monitor.prometheus import PromQL
 
 
 # 对应kube-state-metrics服务,监控k8s资源对象级别的指标
