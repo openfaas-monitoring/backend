@@ -11,7 +11,7 @@ class PromQL:
 
     # 测试连接是否有效
     def validConnection(self):
-        response = requests.get(self.apiQuery, {'query': 'up'})
+        response = requests.get(self.apiQuery, {'query': 'up'}, timeout=5)
         if response.status_code == 200:
             return True
         else:
