@@ -9,6 +9,14 @@ class PromQL:
         self.apiQuery = 'http://' + ip + '/api/v1/query'
         self.apiQueryRange = 'http://' + ip + '/api/v1/query_range'
 
+    # 测试连接是否有效
+    def validConnection(self):
+        response = requests.get(self.apiQuery, {'query': 'up'})
+        if response.status_code == 200:
+            return True
+        else:
+            return False
+
     # 查询瞬时值或者确定的信息
     def query(self, query: str):
         res = {

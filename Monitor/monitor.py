@@ -18,10 +18,14 @@ class Monitor:
     def setIP(self, ip):
         self.ip = ip
         self.promQL = PromQL(ip)
-        self.cadvisor = CAdvisor(self.promQL)
-        self.functionMonitor = FunctionMonitor(self.promQL)
-        self.kubeState = KubeState(self.promQL)
-        self.nodeExporter = NodeExporter(self.promQL)
+        if self.promQL.validConnection():
+            self.cadvisor = CAdvisor(self.promQL)
+            self.functionMonitor = FunctionMonitor(self.promQL)
+            self.kubeState = KubeState(self.promQL)
+            self.nodeExporter = NodeExporter(self.promQL)
+            return True
+        else:
+            return False
 
     # 获取函数列表
     def getFunctions(self):
