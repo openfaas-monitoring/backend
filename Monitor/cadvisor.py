@@ -16,8 +16,8 @@ class CAdvisor:
         res['pod_name'] = response['data'][0]['metric']['node']
         return res
 
-    # pod相关信息查询
-    def getInfoFromPod(self, pod: str):
+    # pod相关动态信息查询
+    def getDynamicInfoFromPod(self, pod: str):
         end = time.time()
         res = dict()
         try:
@@ -45,4 +45,4 @@ class CAdvisor:
 if __name__ == '__main__':
     promQL = PromQL('10.60.150.24:31119')
     cadvisor = CAdvisor(promQL)
-    print(cadvisor.getInfoFromPod('add'))
+    print(cadvisor.getDynamicInfoFromPod('add'))

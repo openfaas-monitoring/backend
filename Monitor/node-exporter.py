@@ -7,8 +7,8 @@ class NodeExporter:
     def __init__(self, prom: PromQL):
         self.promQL = prom
 
-    # 服务器相关信息查询
-    def getInfoFromNode(self, node: str):
+    # 服务器相关动态信息查询
+    def getDynamicInfoFromNode(self, node: str):
         end = time.time()
         res = dict()
         try:
@@ -79,4 +79,4 @@ if __name__ == '__main__':
     promQL = PromQL('10.60.150.24:31119')
     nodeExporter = NodeExporter(promQL)
     # print(nodeExporter.getDiskWrite('vm-2c4g-node5', time.time()))
-    print(nodeExporter.getInfoFromNode('vm-2c4g-node5'))
+    print(nodeExporter.getDynamicInfoFromNode('vm-2c4g-node5'))
