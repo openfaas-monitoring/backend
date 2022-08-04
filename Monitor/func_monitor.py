@@ -1,5 +1,5 @@
-from prometheus import PromQL, PrometheusCannotQuery
-from cadvisor import CAdvisor
+from Monitor.prometheus import PromQL, PrometheusCannotQuery
+from Monitor.cadvisor import CAdvisor
 
 
 # 对应openfaas-prometheus服务,监控函数级别的指标

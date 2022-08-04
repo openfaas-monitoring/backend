@@ -1,4 +1,4 @@
-from prometheus import PromQL, PrometheusCannotQuery
+from Monitor.prometheus import PromQL, PrometheusCannotQuery
 import time
 
 
