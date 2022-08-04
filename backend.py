@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 from Monitor.monitor import Monitor
 
@@ -24,60 +24,60 @@ def setIP():
     ip = request.args.get('ip')
     valid = monitor.setIP(ip)
     if valid:
-        return {'status': 'success'}
+        return jsonify({'status': 'success'})
     else:
-        return {'status': 'error'}
+        return jsonify({'status': 'error'})
 
 
 @app.route('/global/functions', methods=['GET'])
 def getFunctions():
-    return monitor.getFunctions()
+    return jsonify(monitor.getFunctions())
 
 
 @app.route('/static/function', methods=['GET'])
 def getStaticInfoFromFunction():
     func = request.args.get('func')
-    return monitor.getStaticInfoFromFunction(func)
+    return jsonify(monitor.getStaticInfoFromFunction(func))
 
 
 @app.route('/dynamic/function', methods=['GET'])
 def getDynamicInfoFromFunction():
     func = request.args.get('func')
-    return monitor.getDynamicInfoFromFunction(func)
+    return jsonify(monitor.getDynamicInfoFromFunction(func))
 
 
 @app.route('/global/pods', methods=['GET'])
 def getPods():
-    return monitor.getPods()
+    return jsonify(monitor.getPods())
 
 
 @app.route('/static/pod', methods=['GET'])
-def getDynamicInfoFromFunction():
+def getStaticInfoFromPod():
     pod = request.args.get('pod')
-    return monitor.getStaticInfoFromPod(pod)
+    return jsonify(monitor.getStaticInfoFromPod(pod))
 
 
 @app.route('/dynamic/pod', methods=['GET'])
 def getDynamicInfoFromPod():
     pod = request.args.get('pod')
-    return monitor.getDynamicInfoFromPod(pod)
+    return jsonify(monitor.getDynamicInfoFromPod(pod))
 
 
 @app.route('/global/nodes', methods=['GET'])
-def getDynamicInfoFromPod():
-    return monitor.getNodes()
+def getNodes():
+    return jsonify(monitor.getNodes())
 
 
 @app.route('/dynamic/getPodsFromNode', methods=['GET'])
-def getDynamicInfoFromPod():
+def getPodsFromNode():
     node = request.args.get('node')
-    return monitor.getPodsFromNode(node)
+    return jsonify(monitor.getPodsFromNode(node))
 
 
 @app.route('/dynamic/node', methods=['GET'])
-def getDynamicInfoFromPod():
+def getDynamicInfoFromNode():
     node = request.args.get('node')
-    return monitor.getDynamicInfoFromNode(node)
+    return jsonify(monitor.getDynamicInfoFromNode(node))
 
 
 if __name__ == '__main__':
