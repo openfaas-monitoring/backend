@@ -62,6 +62,6 @@ class Monitor:
 
 if __name__ == '__main__':
     monitor = Monitor()
-    monitor.setIp('10.60.150.24:31119')
+    monitor.setIP('10.60.150.24:31119')
     # print(monitor.getDynamicInfoFromPod('nodeinfo'))
     print(monitor.getDynamicInfoFromNode('vm-2c4g-node6'))
