@@ -15,7 +15,7 @@ class Monitor:
         self.kubeState = None
         self.nodeExporter = None
 
-    def setIp(self, ip):
+    def setIP(self, ip):
         self.ip = ip
         self.promQL = PromQL(ip)
         self.cadvisor = CAdvisor(self.promQL)
