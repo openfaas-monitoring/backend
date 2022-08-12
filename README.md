@@ -6,6 +6,10 @@
 
 ## Code Framework
 
+##  logger
+
+通过python连接到k8s集群，所需的资源文件放在`resource`目录下。（这里实际的资源文件没有上传到github上）
+
 ## Todo
 
 OpenFaas服务层面：
@@ -45,3 +49,6 @@ OpenFaas服务层面：
 - [x] 节点网络IO随时间变化
 - [x] 服务器上启动的对应容器
 
+
+
+ 
