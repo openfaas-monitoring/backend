@@ -3,6 +3,7 @@ from Monitor.cadvisor import CAdvisor
 from Monitor.func_monitor import FunctionMonitor
 from Monitor.kube_state_metrics import KubeState
 from Monitor.node_exporter import NodeExporter
+from Monitor.func_logger import FunctionLogger
 
 
 # 总体的监控器对象，负责对接其他不同层面的监控器对象
@@ -14,6 +15,7 @@ class Monitor:
         self.functionMonitor = None
         self.kubeState = None
         self.nodeExporter = None
+        self.functionLogger = None
 
     def setIP(self, ip):
         self.ip = ip
@@ -23,6 +25,7 @@ class Monitor:
             self.functionMonitor = FunctionMonitor(self.promQL)
             self.kubeState = KubeState(self.promQL)
             self.nodeExporter = NodeExporter(self.promQL)
+            self.functionLogger = FunctionLogger('./resource/kubeconfig.yml')
             return True
         else:
             return False
@@ -62,6 +65,14 @@ class Monitor:
     # 获取服务器动态信息
     def getDynamicInfoFromNode(self, node: str):
         return self.nodeExporter.getDynamicInfoFromNode(node)
+
+    # 获取函数日志
+    def getLogsFromFunction(self, func: str):
+        return self.functionLogger.getLogsFromFunction(func)
+
+    # 获取函数运行信息
+    def getRunningInfoFromFunction(self, func: str):
+        return self.functionLogger.getFunctionRunningInfo(func)
 
 
 if __name__ == '__main__':
