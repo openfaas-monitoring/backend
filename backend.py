@@ -2,7 +2,6 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from Monitor.monitor import Monitor
 
-
 app = Flask(__name__)
 CORS(app)
 # app的配置选项
@@ -78,6 +77,18 @@ def getPodsFromNode():
 def getDynamicInfoFromNode():
     node = request.args.get('node')
     return jsonify(monitor.getDynamicInfoFromNode(node))
+
+
+@app.route('/logs', methods=['GET'])
+def getLogsFromFunction():
+    func = request.args.get('func')
+    return jsonify(monitor.getLogsFromFunction(func))
+
+
+@app.route('/running', methods=['GET'])
+def getRunningInfoFromFunction():
+    func = request.args.get('func')
+    return jsonify(monitor.getRunningInfoFromFunction(func))
 
 
 if __name__ == '__main__':
