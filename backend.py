@@ -91,5 +91,11 @@ def getRunningInfoFromFunction():
     return jsonify(monitor.getRunningInfoFromFunction(func))
 
 
+@app.route('/source', methods=['GET'])
+def getSourceInfoFromFunction():
+    func = request.args.get('func')
+    return jsonify(monitor.getSourceInfoFromFunction(func))
+
+
 if __name__ == '__main__':
     app.run()
