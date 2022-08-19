@@ -7,24 +7,24 @@ class FunctionManager:
         self.work_dir = work_dir
 
     # 获取函数源码级别静态信息
-    def getSourceInfo(self, func: str):
+    def getSourceInfo(self, func_name: str):
         res = {'status': 'success',
-               'source_code': self.getSourceCode(func),
-               'config': self.getConfigAndExplain(func)}
+               'source_code': self.getSourceCode(func_name),
+               'config': self.getConfigAndExplain(func_name)}
 
         return res
 
     # 获取函数源码
-    def getSourceCode(self, func: str):
-        path = '{}/{}/handler.py'.format(self.work_dir, func)
+    def getSourceCode(self, func_name: str):
+        path = '{}/{}/handler.py'.format(self.work_dir, func_name)
         with open(path, 'r') as f:
             code = f.readlines()
             code = ''.join(code)
         return code
 
     # 获取函数流程配置并解析
-    def getConfigAndExplain(self, func: str):
-        path = '{}/{}/process-cfg.json'.format(self.work_dir, func)
+    def getConfigAndExplain(self, func_name: str):
+        path = '{}/{}/process-cfg.json'.format(self.work_dir, func_name)
         with open(path, 'r') as f:
             config_json = json.load(f)
 
