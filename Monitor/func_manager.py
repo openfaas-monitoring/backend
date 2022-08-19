@@ -92,4 +92,4 @@ class FunctionManager:
 
 if __name__ == '__main__':
     funcManager = FunctionManager('../resource')
-    print(funcManager.getConfig('loop'))
+    print(funcManager.getConfigAndExplain('loop'))
