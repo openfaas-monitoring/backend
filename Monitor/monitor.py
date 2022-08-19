@@ -4,6 +4,7 @@ from Monitor.func_monitor import FunctionMonitor
 from Monitor.kube_state_metrics import KubeState
 from Monitor.node_exporter import NodeExporter
 from Monitor.func_logger import FunctionLogger
+from Monitor.func_manager import FunctionManager
 
 
 # 总体的监控器对象，负责对接其他不同层面的监控器对象
@@ -16,6 +17,7 @@ class Monitor:
         self.kubeState = None
         self.nodeExporter = None
         self.functionLogger = None
+        self.functionManager = None
 
     def setIP(self, ip):
         self.ip = ip
@@ -26,6 +28,7 @@ class Monitor:
             self.kubeState = KubeState(self.promQL)
             self.nodeExporter = NodeExporter(self.promQL)
             self.functionLogger = FunctionLogger('./resource/kubeconfig.yml')
+            self.functionManager = FunctionManager('/root/openfaas-workspace')
             return True
         else:
             return False
@@ -73,6 +76,10 @@ class Monitor:
     # 获取函数运行信息
     def getRunningInfoFromFunction(self, func: str):
         return self.functionLogger.getFunctionRunningInfo(func)
+
+    # 获取函数源码级别信息
+    def getSourceInfoFromFunction(self, func: str):
+        return self.functionManager.getSourceInfo(func)
 
 
 if __name__ == '__main__':

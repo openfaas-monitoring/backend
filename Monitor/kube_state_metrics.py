@@ -33,6 +33,7 @@ class KubeState:
         res['status'] = response['status']
         res['pods'] = [{
             'pod_name': record['metric']['pod'].split('-')[0],
+            'pod_real_name':record['metric']['pod'],
             'node': record['metric']['node']
         } for record in response['data']]
         return res
