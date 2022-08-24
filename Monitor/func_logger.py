@@ -1,4 +1,5 @@
 from kubernetes import client, config
+import time
 
 
 # 通过连接kubernetes来获取日志信息
@@ -29,12 +30,10 @@ class FunctionLogger:
                                                 since_seconds=since_seconds)
         return logs
 
-    # 获取函数的运行信息
-    def getFunctionRunningInfo(self, func_name: str):
-        res = {'status': 'success', 'func_info': "hahah"}
-        return res
-
 
 if __name__ == '__main__':
     funcLogger = FunctionLogger('../resource/kubeconfig.yml')
-    print(funcLogger.getLogsFromFunction('ordertest'))
+    while True:
+        print('==========================')
+        print(funcLogger.getLogsFromFunc1('stdout', 1))
+        time.sleep(0.5)

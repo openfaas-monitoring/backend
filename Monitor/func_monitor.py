@@ -1,12 +1,15 @@
 from Monitor.prometheus import PromQL, PrometheusCannotQuery
 from Monitor.cadvisor import CAdvisor
+from Monitor.kube_state_metrics import KubeState
 
 
 # 对应openfaas-prometheus服务,监控函数级别的指标
 class FunctionMonitor:
-    def __init__(self, prom: PromQL):
+    def __init__(self, prom: PromQL, node_info):
         self.promQL = prom
         self.cadvisor = CAdvisor(prom)
+        self.podsInfo = KubeState(prom).getPods()['pods']
+        self.hostToInfo = node_info
 
     # 获取函数列表
     def getFunctions(self):
@@ -23,6 +26,7 @@ class FunctionMonitor:
             res['image'] = self.getImagePos(func)
             res['replicas'] = self.getReplicas(func)
             res['invocations'] = self.getInvocationCount(func)
+            res['running_api'] = self.getLogIP(func)
 
             res['status'] = 'success'
         except PrometheusCannotQuery:
@@ -45,6 +49,13 @@ class FunctionMonitor:
     def getImagePos(self, func: str):
         query = 'kube_pod_container_info{{namespace="openfaas-fn", pod=~"^{func}.*"}}'.format(func=func + '-')
         return self.promQL.query(query)['data'][0]['metric']['image_spec']
+
+    # 函数对应存储log的位置
+    def getLogIP(self, func: str):
+        for pod_info in self.podsInfo:
+            if func == pod_info['pod_name']:
+                return self.hostToInfo[pod_info['node']]
+        return "No Match"
 
     # 函数副本数
     def getReplicas(self, func: str):
@@ -83,5 +94,9 @@ class FunctionMonitor:
 
 if __name__ == '__main__':
     promQL = PromQL('10.60.150.24:31119')
-    functionMonitor = FunctionMonitor(promQL)
-    print(functionMonitor.getStaticInfoFromFunction('add'))
+    functionMonitor = FunctionMonitor(promQL, {
+        'vm-8c16g-node10': '10.60.150.24',
+        'vm-2c4g-node6': '10.60.150.54',
+        'vm-2c4g-node5': '10.60.150.55',
+    })
+    print(functionMonitor.getStaticInfoFromFunction('ordertest'))

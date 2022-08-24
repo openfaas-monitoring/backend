@@ -9,7 +9,7 @@ from Monitor.func_manager import FunctionManager
 
 # 总体的监控器对象，负责对接其他不同层面的监控器对象
 class Monitor:
-    def __init__(self):
+    def __init__(self, node_info):
         self.ip = None
         self.promQL = None
         self.cadvisor = None
@@ -18,13 +18,14 @@ class Monitor:
         self.nodeExporter = None
         self.functionLogger = None
         self.functionManager = None
+        self.nodeInfo = node_info
 
     def setIP(self, ip):
         self.ip = ip
         self.promQL = PromQL(ip)
         if self.promQL.validConnection():
             self.cadvisor = CAdvisor(self.promQL)
-            self.functionMonitor = FunctionMonitor(self.promQL)
+            self.functionMonitor = FunctionMonitor(self.promQL, self.nodeInfo)
             self.kubeState = KubeState(self.promQL)
             self.nodeExporter = NodeExporter(self.promQL)
             self.functionLogger = FunctionLogger('./resource/kubeconfig.yml')
@@ -73,17 +74,17 @@ class Monitor:
     def getLogsFromFunction(self, func: str):
         return self.functionLogger.getLogsFromFunction(func)
 
-    # 获取函数运行信息
-    def getRunningInfoFromFunction(self, func: str):
-        return self.functionLogger.getFunctionRunningInfo(func)
-
     # 获取函数源码级别信息
     def getSourceInfoFromFunction(self, func: str):
         return self.functionManager.getSourceInfo(func)
 
 
 if __name__ == '__main__':
-    monitor = Monitor()
+    monitor = Monitor({
+        'vm-8c16g-node10': '10.60.150.24',
+        'vm-2c4g-node6': '10.60.150.54',
+        'vm-2c4g-node5': '10.60.150.55',
+    })
     monitor.setIP('10.60.150.24:31119')
     # print(monitor.getDynamicInfoFromPod('nodeinfo'))
     print(monitor.getDynamicInfoFromNode('vm-2c4g-node6'))

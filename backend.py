@@ -9,7 +9,11 @@ app.config['JSON_AS_ASCII'] = False
 app.config['JSONIFY_MIMETYPE'] = "application/json;charset=utf-8"
 
 # 全局监控对象[使用前需要先进行setIP]
-monitor = Monitor()
+monitor = Monitor({
+    'vm-8c16g-node10': '10.60.150.24',
+    'vm-2c4g-node6': '10.60.150.54',
+    'vm-2c4g-node5': '10.60.150.55',
+})
 monitor.setIP('10.60.150.24:31119')  # 测试使用
 
 
@@ -83,12 +87,6 @@ def getDynamicInfoFromNode():
 def getLogsFromFunction():
     func = request.args.get('func')
     return jsonify(monitor.getLogsFromFunction(func))
-
-
-@app.route('/running', methods=['GET'])
-def getRunningInfoFromFunction():
-    func = request.args.get('func')
-    return jsonify(monitor.getRunningInfoFromFunction(func))
 
 
 @app.route('/source', methods=['GET'])
