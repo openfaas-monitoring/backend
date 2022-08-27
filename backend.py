@@ -14,7 +14,7 @@ monitor = Monitor({
     'vm-2c4g-node6': '10.60.150.54',
     'vm-2c4g-node5': '10.60.150.55',
 })
-monitor.setIP('10.60.150.24:31119')  # 测试使用
+monitor.setIP('10.60.150.24:31119')
 
 
 @app.route('/', methods=['GET'])
